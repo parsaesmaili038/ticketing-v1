@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت تیکت جدید</title>
+    <style>
+        :root {
+            --bg: #0f172a; /* پس‌زمینه تیره */
+            --card-bg: rgba(255, 255, 255, 0.08); /* کارت شیشه‌ای */
+            --card-border: rgba(255, 255, 255, 0.12);
+            --text: #e2e8f0; /* متن روشن */
+            --muted: #94a3b8; /* متن کم‌رنگ */
+            --accent: #38bdf8; /* آبی جذاب */
+            --accent-2: #a78bfa; /* بنفش جذاب */
+            --anon: #f59e0b; /* نارنجی برای ناشناس */
+            --error-color: #f87171; /* قرمز برای خطا */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif; /* فونت ساده و خوانا */
+            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b); /* گرادینت جذاب */
+            color: var(--text);
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(15px);
+            width: 100%;
+            max-width: 700px;
+            margin-top: 20px;
+        }
+        
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 2.2em;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: var(--accent-2);
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: calc(100% - 24px); /* تنظیم عرض با احتساب padding */
+            padding: 12px;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05); /* کمی شفاف */
+            color: var(--text);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical; /* اجازه تغییر اندازه عمودی */
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0; /* حذف مارجین اضافی برای لیبل چک‌باکس */
+            margin-left: 10px; /* فاصله بین چک‌باکس و لیبل */
+            font-size: 1em;
+            color: var(--text);
+        }
+
+        input[type="checkbox"] {
+            accent-color: var(--anon); /* رنگ تیک چک‌باکس */
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+        }
+        
+        /* استایل برای وضعیت لاگین بودن */
+        .user-status {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 0.95em;
+        }
+        .user-status strong {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ثبت تیکت جدید</h1>
+        
+        {% if user.is_authenticated %}
+            <div class="user-status">
+                شما با نام کاربری <strong>{{ user.username }}</strong> وارد شده‌اید.
+                <br>
+                می‌توانید تیکت را به نام خود ثبت کنید یا با فعال کردن گزینه "ثبت به صورت ناشناس"، آن را ناشناس بفرستید.
+            </div>
+        {% else %}
+            <div class="user-status" style="color: var(--error-color); border-color: var(--error-color);">
+                شما وارد حساب کاربری خود نشده‌اید. برای ثبت تیکت، باید آن را به صورت ناشناس ثبت کنید.
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="error-message" style="font-size: 0.9em;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="submit-button">ارسال تیکت</button>
+        </form>
+    </div>
+</body>
+</html>

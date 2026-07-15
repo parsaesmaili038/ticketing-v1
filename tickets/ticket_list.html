@@ -1,0 +1,35 @@
+<!-- tickets/templates/tickets/ticket_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>لیست تیکت‌ها</title>
+    <style>
+        /* می‌تونی اینجا کمی استایل CSS اضافه کنی تا ظاهر بهتری داشته باشه */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        ul { list-style: none; padding: 0; }
+        li { background-color: #f9f9f9; border: 1px solid #eee; margin-bottom: 15px; padding: 15px; border-radius: 5px; }
+        strong { color: #0056b3; }
+        small { color: #777; font-size: 0.8em; }
+        hr { border: 0; height: 1px; background: #eee; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>لیست تیکت‌ها</h1>
+    {% if tickets %}
+        <ul>
+            {% for ticket in tickets %}
+                <li>
+                    <strong>{{ ticket.title }}</strong> - {{ ticket.status }}
+                    <p>{{ ticket.description }}</p>
+                    <small>ثبت شده توسط: {{ ticket.created_by }} در {{ ticket.created_at }}</small>
+                </li>
+                <hr> {# این خط رو جدا گذاشتم تا بین آیتم‌ها یه خط افقی باشه #}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>هیچ تیکتی برای نمایش وجود ندارد.</p>
+    {% endif %}
+</body>
+</html>
