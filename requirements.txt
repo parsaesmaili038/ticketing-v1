@@ -31,7 +31,7 @@ decorator==5.2.1
 defusedxml==0.7.1
 distlib==0.4.0
 distro==1.9.0
-Django==6.0.4
+Django==6.0.6
 dnspython==2.8.0
 easyAI==2.1.0
 email-validator==2.3.0
