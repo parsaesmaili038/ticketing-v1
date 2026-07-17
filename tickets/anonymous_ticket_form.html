@@ -6,20 +6,20 @@
     <title>ثبت تیکت جدید</title>
     <style>
         :root {
-            --bg: #0f172a; /* پس‌زمینه تیره */
+            --bg: #0f172a; /* پس‌زمینه تیره */ 
             --card-bg: rgba(255, 255, 255, 0.08); /* کارت شیشه‌ای */
             --card-border: rgba(255, 255, 255, 0.12);
-            --text: #e2e8f0; /* متن روشن */
-            --muted: #94a3b8; /* متن کم‌رنگ */
-            --accent: #38bdf8; /* آبی جذاب */
+            --text: #e2e8f0; /* متن روشن */ /* Light text */ 
+            --muted: #94a3b8; /* متن کم‌رنگ */ /* Muted text */ 
+            --accent: #38bdf8; /* آبی جذاب */  /* Accent blue */ 
             --accent-2: #a78bfa; /* بنفش جذاب */
-            --anon: #f59e0b; /* نارنجی برای ناشناس */
-            --error-color: #f87171; /* قرمز برای خطا */
+            --anon: #f59e0b; /* نارنجی برای ناشناس */  /* Orange for anonymous users */ 
+            --error-color: #f87171; /* قرمز برای خطا */  /* Red for error messages */ 
         }
 
         body {
-            font-family: 'Arial', sans-serif; /* فونت ساده و خوانا */
-            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b); /* گرادینت جذاب */
+            font-family: 'Arial', sans-serif; /* فونت ساده و خوانا */ /* Clean and readable font */ 
+            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b); /* گرادینت جذاب */  /* Attractive gradient */ 
             color: var(--text);
             margin: 0;
             padding: 30px;
@@ -68,7 +68,7 @@
             padding: 12px;
             border: 1px solid var(--card-border);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05); /* کمی شفاف */
+            background: rgba(255, 255, 255, 0.05); /* کمی شفاف */ /* Slight transparency */ 
             color: var(--text);
             font-size: 1em;
             transition: all 0.3s ease;
@@ -93,14 +93,14 @@
         }
 
         .checkbox-group label {
-            margin-bottom: 0; /* حذف مارجین اضافی برای لیبل چک‌باکس */
-            margin-left: 10px; /* فاصله بین چک‌باکس و لیبل */
+            margin-bottom: 0; /* حذف مارجین اضافی برای لیبل چک‌باکس */ /* Remove extra margin from the checkbox label */ 
+            margin-left: 10px; /* فاصله بین چک‌باکس و لیبل */ /* Spacing between checkbox and label */ 
             font-size: 1em;
             color: var(--text);
         }
 
         input[type="checkbox"] {
-            accent-color: var(--anon); /* رنگ تیک چک‌باکس */
+            accent-color: var(--anon); /* رنگ تیک چک‌باکس */ /* Checkbox checkmark color */ 
             width: 20px;
             height: 20px;
             cursor: pointer;
@@ -156,10 +156,13 @@
                 شما با نام کاربری <strong>{{ user.username }}</strong> وارد شده‌اید.
                 <br>
                 می‌توانید تیکت را به نام خود ثبت کنید یا با فعال کردن گزینه "ثبت به صورت ناشناس"، آن را ناشناس بفرستید.
+                
+                  You can submit the ticket with your name or enable the "Submit anonymously" option to send it without revealing your identity.
             </div>
         {% else %}
             <div class="user-status" style="color: var(--error-color); border-color: var(--error-color);">
-                شما وارد حساب کاربری خود نشده‌اید. برای ثبت تیکت، باید آن را به صورت ناشناس ثبت کنید.
+                شما وارد حساب کاربری خود نشده‌اید. برای ثبت تیکت، باید آن را به صورت ناشناس ثبت کنید. 
+                You are not logged in. To create a ticket, you must submit it anonymously.
             </div>
         {% endif %}
 
