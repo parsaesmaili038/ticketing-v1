@@ -1,27 +1,27 @@
-<!DOCTYPE html>
++7<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لیست تیکت‌ها</title>
+    <title>لیست تیکت‌ها رTicket list </title>
     <style>
         :root {
-            --bg: #0f172a; /* پس‌زمینه تیره */
-            --card-bg: rgba(255, 255, 255, 0.08); /* کارت شیشه‌ای */
+            --bg: #0f172a; /* پس‌زمینه تیره */ /* Dark background */ 
+            --card-bg: rgba(255, 255, 255, 0.08); /* کارت شیشه‌ای */ /* Glass card */
             --card-border: rgba(255, 255, 255, 0.12);
-            --text: #e2e8f0; /* متن روشن */
-            --muted: #94a3b8; /* متن کم‌رنگ */
-            --accent: #38bdf8; /* آبی جذاب */
-            --accent-2: #a78bfa; /* بنفش جذاب */
-            --anon: #f59e0b; /* نارنجی برای ناشناس */
-            --error-color: #f87171; /* قرمز برای خطا */
-            --status-open: #22c55e; /* سبز برای باز */
-            --status-closed: #64748b; /* خاکستری برای بسته */
+            --text: #e2e8f0; /* متن روشن */  /* Light  text */
+            --muted: #94a3b8; /* متن کم‌رنگ */  /* Muted text */
+            --accent: #38bdf8; /* آبی جذاب */   /* Accent blue */
+            --accent-2: #a78bfa; /* بنفش جذاب */  /* Accent purple */
+            --anon: #f59e0b; /* نارنجی برای تیکت  ناشناس */  /* Orange for anonymous tickets */ 
+            --error-color: #f87171; /* قرمز برای خطا */  /* Red for errors */
+            --status-open: #22c55e; /* سبز برای باز */ /* Green for open tickets */ 
+            --status-closed: #64748b; /* خاکستری برای بسته */  /* Gray for closed tickets */
         }
 
         body {
-            font-family: 'Arial', sans-serif; /* فونت ساده و خوانا */
-            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b); /* گرادینت جذاب */
+            font-family: 'Arial', sans-serif; /* فونت ساده و خوانا */ /* Clean and readable font */ 
+            background: linear-gradient(135deg, #0f172a, #111827, #1e1b4b); /* گرادینت جذاب */  /* Attractive gradient */ 
             color: var(--text);
             margin: 0;
             padding: 30px;
@@ -57,7 +57,7 @@
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* فاصله بین عناصر داخلی */
+            gap: 10px; /* فاصله بین عناصر داخلی */ /* Spacing between internal elements */ 
         }
 
         .ticket-card:hover {
@@ -67,14 +67,14 @@
         }
 
         .ticket-card.anonymous {
-            border-left: 6px solid var(--anon); /* خط کنار کارت برای ناشناس */
+            border-left: 6px solid var(--anon); /* خط کنار کارت برای ناشناس */   /* Side border for anonymous tickets */
         }
 
         .ticket-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* برای چیدمان بهتر در موبایل */
+            flex-wrap: wrap; /* برای چیدمان بهتر در موبایل */    /* Better layout on mobile devices */
             gap: 10px;
         }
 
@@ -82,7 +82,7 @@
             font-size: 1.4em;
             font-weight: bold;
             color: var(--accent);
-            flex-grow: 1; /* عنوان فضا را اشغال کند */
+            flex-grow: 1; /* عنوان فضا را اشغال کند */   /* Allow the title to take available space */
         }
 
         .ticket-status {
@@ -90,22 +90,22 @@
             padding: 6px 14px;
             border-radius: 12px;
             font-weight: 500;
-            text-wrap: nowrap; /* عنوان وضعیت را در یک خط نگه دارد */
+            text-wrap: nowrap; /* عنوان وضعیت را در یک خط نگه دارد */ /* Keep the status title on one line */ 
         }
         
         .status-open {
-            background-color: rgba(34, 197, 94, 0.15); /* سبز کم‌رنگ */
+            background-color: rgba(34, 197, 94, 0.15); /* سبز کم‌رنگ */ /* Light green */
             color: var(--status-open);
         }
         .status-closed {
-            background-color: rgba(100, 116, 139, 0.15); /* خاکستری کم‌رنگ */
+            background-color: rgba(100, 116, 139, 0.15); /* خاکستری کم‌رنگ */ /* Light gray */ 
             color: var(--status-closed);
         }
 
         .ticket-description {
             font-size: 1.05em;
             color: var(--muted);
-            display: -webkit-box; /* برای محدود کردن تعداد خطوط */
+            display: -webkit-box; /* برای محدود کردن تعداد خطوط */  /* Limit the number of lines */ 
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
@@ -129,11 +129,11 @@
             color: var(--anon);
         }
         
-        /* دکمه ثبت تیکت */
+        /* دکمه ثبت تیکت */ /* Submit ticket button */
         .create-ticket-button {
             display: block;
-            width: fit-content; /* عرض خودکار */
-            margin: 40px auto 0; /* وسط چین کردن */
+            width: fit-content; /* عرض خودکار */  /* Auto width */
+            margin: 40px auto 0; /* وسط چین کردن */   /* Center alignment */ 
             padding: 15px 30px;
             background: linear-gradient(90deg, var(--accent), var(--accent-2));
             border: none;
@@ -143,7 +143,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none; /* حذف خط زیر لینک */
+            text-decoration: none; /* حذف خط زیر لینک */  /* Remove link underline */ 
         }
 
         .create-ticket-button:hover {
@@ -156,28 +156,28 @@
     <div class="container">
         <h1>لیست تیکت‌ها</h1>
         
-        <a href="{% url 'anonymous_ticket_create' %}" class="create-ticket-button">ثبت تیکت جدید</a>
+        <a href="{% url 'anonymous_ticket_create' %}" class="create-ticket-button">ثبت تیکت جدید create new ticket </a>
 
         {% for ticket in tickets %}
             <div class="ticket-card {% if ticket.is_anonymous %}anonymous{% endif %}">
                 <div class="ticket-header">
                     <h2 class="ticket-title">{{ ticket.title }}</h2>
-                    <span class="ticket-status status-open">باز</span> {# فرض می‌کنیم همه باز هستند #}
+                    <span class="ticket-status status-open">باز</span> {# فرض می‌کنیم همه باز هستند #} {# Assume all tickets are open for now #}
                 </div>
                 <p class="ticket-description">{{ ticket.description }}</p>
                 <div class="ticket-footer">
                     <span class="submitter-info {% if ticket.is_anonymous %}anonymous{% endif %}">
-                        ثبت‌کننده: {{ ticket.display_name }} {# یا ticket.user.username اگر لاگین باشد #}
+                        ثبت‌کننده: {{ ticket.display_name }} {# یا ticket.user.username اگر لاگین باشد #} {# Use ticket.user.username if the user is logged in #}
                         {% if ticket.is_anonymous %}
-                            (شناسه: #{{ ticket.anonymous_id }}) {# نمایش شناسه ناشناس #}
+                            (شناسه: #{{ ticket.anonymous_id }}) {# نمایش شناسه ناشناس #} {# Show anonymous ticket ID #}
                         {% endif %}
                     </span>
                     <br>
-                    <small>ثبت شده در: {{ ticket.created_at|date:"Y/m/d H:i" }}</small>
+                    <small>ثبت شده در: (created at : {{ ticket.created_at|date:"Y/m/d H:i" }}</small>
                 </div>
             </div>
         {% empty %}
-            <p>هنوز هیچ تیکتی ثبت نشده است. اولین نفر باشید!</p>
+            <p>هنوز هیچ تیکتی ثبت نشده است. اولین نفر باشید! No tickets have been created yet. Be the first to submit one!</p>
         {% endfor %}
     </div>
 </body>
