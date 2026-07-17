@@ -1,0 +1,1 @@
+If you use the project, you have approved all the rules mentioned in the rules.txt file.

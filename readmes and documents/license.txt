@@ -1,0 +1,47 @@
+Translation in a friendlier, more casual style
+Hello, dear developer! 👋
+
+I’m really glad you’re here so we can take a closer look at the heart of this project, [ticketing], and make sure everything—from the code to the way it’s used—is smooth, solid, and as precise as a Swiss watch. Our goal is for this to be more than just a code repository; we want it to be a safe, creative, and genuinely productive space for all of us, especially for you, because you clearly enjoy programming. 😉
+
+1. Project Overview and Future Vision 🌠
+This project, built with care and enthusiasm, is meant to become a powerful framework for managing tasks and projects. And our big vision? To use the latest technologies—including AI, which you already know is pretty awesome—to help developers finish their projects faster, better, and with top-tier quality. Pretty exciting, right? ✨
+
+2. Artificial Intelligence and Intellectual Property 🧠👑
+Yep, you heard that right—AI has been our main assistant in this project. It’s helped us write code, spot bugs, and even come up with fresh ideas, almost like a super-fast programmer who never gets tired. But let’s be clear: all material and intellectual rights to this project, including the code, documentation, and design, belong completely to the original creator. AI was only used to help us work faster, smarter, and more creatively—not to claim ownership of anything that isn’t ours. So don’t worry, everything is under control. 😉
+
+3. Main Rules for Use and the Red Lines ⛔
+This project is open source and made with love and care, but that does not mean anything goes. To keep it safe and useful for everyone, please follow these rules carefully:
+
+a) Educational and Research Use: Totally allowed!
+You’re free to study the code, learn from it, use it as a pattern for your own programming, and even cite it in your research. Learn as much as you want and keep growing!
+
+b) Development and Sharing: Credit the source!
+If you improve this project, modify it, or use part of it in your own work, you must mention the original source. A link to the project page or documentation is enough. It’s a simple way to respect other people’s work—and honestly, that little bit of credit says a lot about your professionalism. 😉
+
+c) Commercial Use Without Permission: Not allowed!
+Any commercial use of this project—such as selling it, offering services based on it, or including it in commercial products—is strictly forbidden unless you get written and official permission from the project owner first. If you need permission or have questions, the official contact channel is open:
+
+Official coordination and licensing channel: https://splus.ir/the_par3a
+
+d) Malicious Use: Absolutely not!
+This project must never be used for anything illegal, harmful, or unethical. That includes hacking attempts, spreading viruses, or anything that threatens someone else’s security or privacy. Any such use is a direct violation of the rules and may lead to legal action. We’re here to make programming better, not messier. 🙂
+
+e) No Guarantee of Perfect Security: Use carefully!
+Even though we’ve done our best to make the code secure, no software is ever 100% safe. If any security issue comes up, that responsibility is ultimately on you. We strongly recommend that you also apply your own security checks before using it seriously. Your project’s safety is your responsibility too.
+
+f) Final Responsibility Is Yours: Be careful!
+As the end user, you are fully responsible for choosing, installing, and using this project properly. If anything goes wrong because of misuse, ignoring the rules, or trusting the project without enough testing, that comes back to you. So please use it wisely and carefully.
+
+Final Words: Cooperation, Respect, and Success 🎉
+We truly believe that transparency, mutual respect, and following the rules are the foundation of any successful and lasting collaboration. We hope that by sticking to these principles, we can always keep a positive and constructive environment for you and for everyone who loves programming.
+
+Important Technical Note ⚠️
+As you know, in the world of software, nothing is ever 100% perfect, and bugs or unexpected errors can always happen. We’ve done our best to provide stable and reliable code, but we can’t guarantee that the software is completely error-free. Dear dev. , please keep this in mind when using it—especially in sensitive environments—and always be prepared for possible issues. By using this project, you accept that such risks exist.
+
+Thank you so much for your attention and kind cooperation! 🙏
+
+With respect and best wishes for endless success in programming,
+
+The project development team (and the always-ready, cheerful AI assistant!)
+
+Last updated: 7 Khordad 1405 (28 May 2026)
