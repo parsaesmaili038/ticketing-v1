@@ -8,13 +8,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-```
+
     # این include کردن فایل urls.py اپلیکیشن tickets، مسیرهاشو در دسترس قرار میدهد
     # Include the URL configuration for the tickets application.
     # همه URL های tickets/ از این به بعد در tickets/urls.py تعریف میشن
     # All routes under "tickets/" are defined in tickets/urls.py.
-    
-```
+
     path('tickets/', include('tickets.urls')), 
     
     # اگر اپلیکیشن accounts برای لاگین/رجیستر دارید:
