@@ -107,7 +107,7 @@ parso==0.8.6
 pathspec==1.1.0
 paye==0.6.2
 pefile==2024.8.26
-pillow==12.2.0
+pillow==12.3.0
 pkg_about==2.3.0
 platformdirs==4.9.6
 pluggy==1.6.0
