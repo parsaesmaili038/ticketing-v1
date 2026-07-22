@@ -65,7 +65,7 @@ isoduration
 itsdangerous
 jedi
 jiter
-json
+# json  (built-in Python module - no install needed)
 jsonpointer
 jsonschema
 jsonschema-specifications
