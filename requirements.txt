@@ -131,7 +131,7 @@ python-dateutil
 python-discovery
 python-json-logger
 pytokens
-pywin-ctypes
+pywin32-ctypes
 pywinpty
 PyYAML
 pyzmq
