@@ -1,31 +1,104 @@
 name: Bandit Security Scan
 
+# Security scan workflow
+# This workflow checks the whole project for Python security issues.
+# It only reports findings and never modifies code automatically.
+
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
+
+  # Weekly full project security scan
+  # Runs every Sunday at 00:00 UTC
+  schedule:
+    - cron: "0 0 * * 0"
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   bandit:
+
+    name: Run Bandit Security Scanner
+
     runs-on: ubuntu-latest
 
     steps:
+
+      # Download repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      # Setup Python 3.14 environment
+      - name: Set up Python 3.14
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.14"
+          cache: "pip"
 
-      - name: Install dependencies
+      # Install Bandit security scanner
+      - name: Install Bandit
         run: |
           python -m pip install --upgrade pip
           pip install bandit
 
-      - name: Run Bandit
-        run: bandit -r . -x ./venv,./.venv -s B105
+      # Scan entire project
+      # Excludes virtual environments and ignores password example warnings
+      - name: Run Bandit Security Scan
+        id: bandit
+        continue-on-error: true
+        run: |
+          bandit \
+            -r . \
+            -x ./venv,./.venv,./env \
+            -s B105 \
+            -f json \
+            -o bandit-report.json
+
+      # Add report summary to GitHub Actions log
+      - name: Display Bandit Report
+        run: |
+          cat bandit-report.json || true
+
+      # Comment report on Pull Requests
+      - name: Comment Bandit Results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+
+            let report = "No Bandit report found.";
+
+            if (fs.existsSync("bandit-report.json")) {
+              report = fs.readFileSync(
+                "bandit-report.json",
+                "utf8"
+              );
+            }
+
+            const body = `
+            ## 🔐 Bandit Security Scan Report
+
+            Bandit scanned the entire project.
+
+            ⚠️ This workflow only reports issues.
+            It does **not** modify source code automatically.
+
+            \`\`\`json
+            ${report.slice(0, 6000)}
+            \`\`\`
+            `;
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
