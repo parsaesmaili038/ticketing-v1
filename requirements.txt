@@ -142,7 +142,7 @@ scapy
 scikit-learn
 scipy
 seaborn
-SendTrash
+Send2Trash
 setuptools
 six
 sniffio
