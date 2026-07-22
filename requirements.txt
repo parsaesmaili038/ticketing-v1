@@ -48,9 +48,8 @@ fonttools
 fqdn
 frozenlist
 fsspec
-geoip
+geoip2
 greenlet
-h
 hf-xet
 httpcore
 httpx
@@ -137,8 +136,6 @@ PyYAML
 pyzmq
 redis
 referencing
-rfc-validator
-rfc-syntax
 rpds-py
 safetensors
 scapy
@@ -168,7 +165,7 @@ tornado
 tqdm
 traitlets
 transformers
-typing
+#  typing (built-in package-python)
 typing-inspection
 typing_extensions
 tzdata
