@@ -127,7 +127,7 @@ pyproject_hooks
 pysnmp
 pyTelegramBotAPI
 pytest
-python-dateutilpost
+python-dateutil
 python-discovery
 python-json-logger
 pytokens
