@@ -84,7 +84,6 @@ jupyterlab_widgets
 kiwisolver
 lark
 libpass
-libpcapb
 matplotlib
 matplotlib-inline
 maxminddb
