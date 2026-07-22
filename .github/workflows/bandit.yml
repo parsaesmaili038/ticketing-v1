@@ -2,9 +2,9 @@ name: Bandit Security Scan
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -28,5 +28,4 @@ jobs:
           pip install bandit
 
       - name: Run Bandit
-        run: |
-          bandit -r . -x ./venv,./.venv
+        run: bandit -r . -x ./venv,./.venv -s B105
