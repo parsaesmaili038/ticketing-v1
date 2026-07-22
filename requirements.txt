@@ -119,8 +119,8 @@ pure_eval
 py-utlx
 pyasn
 pycparser
-pydantic>,<
-pydantic-core>,<
+pydantic
+pydantic-core
 pyinstaller
 pyinstaller-hooks-contrib
 pyparsing
