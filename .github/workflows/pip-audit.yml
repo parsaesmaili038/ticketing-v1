@@ -1,32 +1,97 @@
-name: pip-audit
+name: pip-audit Security Scan
 
 on:
+  # Run security scan on changes to main branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+
+  # Run security scan for pull requests targeting main branch
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+  # Run automated security scan every Sunday at 00:00 UTC
+  schedule:
+    - cron: "0 0 * * 0"
 
 permissions:
+  # Allow reading repository contents
   contents: read
+
+  # Allow creating security report pull requests
+  pull-requests: write
 
 jobs:
   pip-audit:
+    name: Audit Python dependencies
+
+    # Use Ubuntu runner for security scanning
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout repository source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Install and configure Python 3.14 environment
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
 
+          # Cache pip packages to make future runs faster
+          cache: "pip"
+
+      # Install pip-audit security scanner
       - name: Install pip-audit
         run: |
           python -m pip install --upgrade pip
           pip install pip-audit
 
+      # Scan project dependencies for known vulnerabilities
+      # This step only creates a report and does not modify project files
       - name: Audit dependencies
+        id: audit
+        continue-on-error: true
         run: |
-          pip-audit -r requirements.txt
+          pip-audit \
+            -r requirements.txt \
+            -f json \
+            -o audit-report.json
+
+      # Create a pull request containing only the security report
+      # No source code or dependency versions are changed automatically
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        if: steps.audit.outcome == 'failure'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Commit information for generated security report
+          commit-message: "security: add pip-audit vulnerability report"
+
+          # Pull request title
+          title: "Security: pip-audit vulnerability report"
+
+          # Explain what this automated PR contains
+          body: |
+            ## 🔒 pip-audit Security Report 
+
+            This automated pull request was created because pip-audit detected known vulnerabilities in project dependencies.
+
+            ✅ This PR only contains the security report.
+            ❌ No source code was modified.
+            ❌ No dependency versions were changed automatically.
+
+            Please review the report and update dependencies manually.
+
+          # Dedicated branch for security reports
+          branch: "security/pip-audit-report"
+
+          # Only include the generated report file
+          add-paths: |
+            audit-report.json
+
+          # Add useful labels
+          labels: |
+            security
+            dependencies
