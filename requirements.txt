@@ -154,8 +154,7 @@ stack-data
 starlette
 sympy
 telebot
-telepot
-telnetlib--and-up
+telnetlib-313-and-up
 terminado
 threadpoolctl
 tinycss
