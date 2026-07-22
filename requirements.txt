@@ -4,8 +4,8 @@ aiosignal
 altgraph
 annotated-types
 anyio
-argon-cffi
-argon-cffi-bindings
+argon2-cffi
+argon2-cffi-bindings
 arrow
 asgiref
 asttokens
