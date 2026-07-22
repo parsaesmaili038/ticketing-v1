@@ -1,4 +1,4 @@
-# ./urls.py (فایل اصلی پروژه)
+# ./urls.py ( بهه شدت مهم فایل اصلی پروژه)
 
 from django.contrib import admin
 from django.urls import path, include
