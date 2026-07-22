@@ -138,7 +138,6 @@ pyzmq
 redis
 referencing
 rfc-validator
-rfc-validator
 rfc-syntax
 rpds-py
 safetensors
