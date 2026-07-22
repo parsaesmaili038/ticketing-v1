@@ -131,7 +131,7 @@ python-discovery
 python-json-logger
 pytokens
 pywin32-ctypes
-pywinpty
+pywinpty; sys_platform == "win32"
 PyYAML
 pyzmq
 redis
