@@ -5,41 +5,51 @@
 version: 2
 
 updates:
-  # Keep Python dependencies up to date.
+
+  # Python package security and version updates
   - package-ecosystem: "pip"
     directory: "/"
 
-    # Check for new releases every day.
     schedule:
       interval: "daily"
 
-    # Wait 14 days before opening a version update PR.
-    # This helps avoid upgrading to freshly released versions
-    # that may still contain undiscovered regressions.
     cooldown:
       default-days: 14
 
-    # Maximum number of open Dependabot pull requests.
-    open-pull-requests-limit: 40
-
-    # Apply labels to all Dependabot pull requests.
     labels:
       - "dependencies"
       - "python"
+      - "security"
 
-    # Group all Python dependency updates into a single pull request.
     groups:
       python-dependencies:
         applies-to: version-updates
         update-types:
-          - major
           - minor
           - patch
 
-    # Rebase pull requests automatically when conflicts occur.
     rebase-strategy: "auto"
 
-    # Use conventional commit messages.
     commit-message:
       prefix: "deps"
+      include: "scope"
+
+
+  # GitHub Actions dependency updates
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
+
+    schedule:
+      interval: "daily"
+
+    cooldown:
+      default-days: 7
+
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "security"
+
+    commit-message:
+      prefix: "ci"
       include: "scope"
