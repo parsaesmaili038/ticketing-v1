@@ -1,0 +1,221 @@
+# ==============================================================================
+# Ruff Code Quality
+# ==============================================================================
+#
+# Purpose
+# -------
+# Ruff is an extremely fast Python linter and formatter.
+#
+# This workflow automatically:
+#
+# ✔ Detects Python bugs
+# ✔ Detects unused imports and variables
+# ✔ Detects common performance issues
+# ✔ Enforces code style
+# ✔ Verifies formatting
+# ✔ Applies ONLY safe automatic fixes every Sunday
+# ✔ Creates a Pull Request for review
+#
+# IMPORTANT
+# ---------
+#
+# • This workflow NEVER commits directly to main.
+# • Every automatic change is placed into a separate branch.
+# • A Pull Request is created for manual review.
+# • Nothing is merged automatically.
+#
+# ==============================================================================
+
+name: Ruff Code Quality
+
+on:
+
+  # Run after every push to main
+  push:
+    branches:
+      - main
+
+  # Run on every Pull Request targeting main
+  pull_request:
+    branches:
+      - main
+
+  # Weekly automatic cleanup
+  # Every Sunday at 00:00 UTC
+  schedule:
+    - cron: "0 0 * * 0"
+
+# Prevent duplicate runs for the same branch.
+# If a newer run starts, the older one is cancelled.
+#concurrency:
+ # group: ruff-${{ github.ref }}
+  #cancel-in-progress: true
+
+# Minimum permissions required.
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+
+  ruff:
+
+    name: Ruff Code Quality
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ----------------------------------------------------------------------
+      # Download repository.
+      #
+      # persist-credentials=false prevents the checkout step from keeping
+      # Git credentials, reducing the chance of accidental direct pushes.
+      # ----------------------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # ----------------------------------------------------------------------
+      # Install Python
+      # ----------------------------------------------------------------------
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      # ----------------------------------------------------------------------
+      # Install Ruff
+      #
+      # Uses the official Ruff Action.
+      # ----------------------------------------------------------------------
+
+      - name: Setup Ruff
+        uses: astral-sh/ruff-action@v3
+        with:
+          version: latest
+
+      # ----------------------------------------------------------------------
+      # Run Ruff lint.
+      #
+      # This step DOES NOT modify files.
+      # Results appear directly inside GitHub Actions and Pull Requests.
+      # ----------------------------------------------------------------------
+
+      - name: Ruff Lint
+        run: |
+          ruff check . \
+            --output-format=github
+
+      # ----------------------------------------------------------------------
+      # Verify formatting only.
+      #
+      # No files are modified.
+      # ----------------------------------------------------------------------
+
+      - name: Ruff Format Check
+        run: |
+          ruff format . --check
+
+      # ----------------------------------------------------------------------
+      # Apply safe fixes.
+      #
+      # Runs on every workflow execution.
+      #
+      # Changes are never pushed directly to main.
+      # They are only submitted through Pull Requests.
+      # Ruff applies only safe fixes by default.
+      # ----------------------------------------------------------------------
+
+      - name: Apply Ruff Fixes
+        if: always()
+        run: |
+          ruff check . --fix
+          ruff format .
+
+      # ----------------------------------------------------------------------
+      # Determine whether Ruff changed any files.
+      # ----------------------------------------------------------------------
+
+      - name: Detect Changes
+        if: always()
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ----------------------------------------------------------------------
+      # Create a Pull Request.
+      #
+      # This NEVER commits directly to main.
+      #
+      # A new branch is created automatically and developers
+      # must review the Pull Request before merging.
+      # ----------------------------------------------------------------------
+
+      - name: Create Pull Request
+        if: always()
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+          branch: automation/ruff/${{ github.run_id }}
+
+          base: main
+
+          delete-branch: true
+
+          draft: false
+
+          signoff: false
+
+                   commit-message: |
+            🤖 style(ruff): automated code cleanup ✨
+
+          title: |
+            🤖✨ style: Automated Ruff code cleanup
+
+          body: |
+            ## 🤖✨ Automated Ruff Cleanup
+
+            This Pull Request was automatically generated by GitHub Actions using Ruff. 🚀
+
+            Ruff scanned the Python codebase and applied safe automatic improvements. 🐍
+
+            ### 🛠️ Changes included
+
+            - ✅ Ruff lint fixes
+            - 🎨 Python formatting improvements
+            - 📏 Code style consistency updates
+            - 🔧 Safe automatic refactoring
+
+            ### 🔍 Review information
+
+            - 👀 All changes must be reviewed manually
+            - 🚫 No direct commits were made to `main`
+            - 🚫 No automatic merge is enabled
+            - 🌿 Changes are isolated in a separate branch
+
+            ### ⚙️ Generated by
+
+            - 🧰 Tool: Ruff
+            - 🤖 Workflow: GitHub Actions
+            - ⏰ Automation: Scheduled and CI runs
+
+            Thanks for reviewing this automated improvement! 🙌
+
+          labels: |
+            automated
+            ruff
+            code-quality
+            python
+            needs-review
