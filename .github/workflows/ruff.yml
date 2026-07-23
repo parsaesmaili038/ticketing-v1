@@ -1,51 +1,20 @@
 # ==============================================================================
 # Ruff Code Quality
 # ==============================================================================
-#
-# Purpose
-# -------
-# Ruff is an extremely fast Python linter and formatter.
-#
-# This workflow automatically:
-#
-# ✔ Detects Python bugs
-# ✔ Detects unused imports and variables
-# ✔ Detects common performance issues
-# ✔ Enforces Python code style
-# ✔ Verifies formatting
-# ✔ Applies safe automatic fixes
-# ✔ Creates a Pull Request instead of modifying main directly
-#
-# IMPORTANT
-# ---------
-#
-# • This workflow NEVER commits directly to main.
-# • All automatic changes are isolated in a separate branch.
-# • Every change requires manual Pull Request review.
-#
-# ==============================================================================
 
 name: Ruff Code Quality
 
 
-# ==============================================================================
-# Workflow Triggers
-# ==============================================================================
-
 on:
 
-  # Run after every push to main
   push:
     branches:
       - main
 
-  # Run for every Pull Request targeting main
   pull_request:
     branches:
       - main
 
-  # Weekly maintenance scan
-  # Runs every Sunday at 00:00 UTC
   schedule:
     - cron: "0 0 * * 0"
 
@@ -56,14 +25,10 @@ on:
 
 permissions:
 
-  # Required to create branches and commits for Pull Requests
   contents: write
-
-  # Required to create Pull Requests
   pull-requests: write
-
-  # Required for GitHub Actions information
   actions: read
+
 
 
 # ==============================================================================
@@ -84,10 +49,6 @@ jobs:
 
       # ------------------------------------------------------------------------
       # Checkout repository
-      #
-      # Downloads the repository source code.
-      #
-      # persist-credentials=false prevents accidental direct pushes.
       # ------------------------------------------------------------------------
 
       - name: Checkout repository
@@ -100,8 +61,6 @@ jobs:
 
       # ------------------------------------------------------------------------
       # Setup Python
-      #
-      # Installs Python and enables pip cache.
       # ------------------------------------------------------------------------
 
       - name: Setup Python
@@ -114,8 +73,6 @@ jobs:
 
       # ------------------------------------------------------------------------
       # Setup Ruff
-      #
-      # Uses the official Ruff GitHub Action.
       # ------------------------------------------------------------------------
 
       - name: Setup Ruff
@@ -126,16 +83,7 @@ jobs:
 
 
       # ------------------------------------------------------------------------
-      # Ruff Lint Check
-      #
-      # Detects:
-      #
-      # • Bugs
-      # • Unused imports
-      # • Bad patterns
-      # • Code quality issues
-      #
-      # This step does NOT modify files.
+      # Ruff Lint
       # ------------------------------------------------------------------------
 
       - name: Ruff Lint
@@ -151,9 +99,6 @@ jobs:
 
       # ------------------------------------------------------------------------
       # Ruff Format Check
-      #
-      # Only checks formatting.
-      # No files are changed.
       # ------------------------------------------------------------------------
 
       - name: Ruff Format Check
@@ -168,23 +113,23 @@ jobs:
 
 
       # ------------------------------------------------------------------------
-      # Apply Ruff Automatic Fixes
+      # Apply Ruff Fixes
       #
-      # Ruff applies safe fixes only.
-      #
-      # Changes are NOT pushed to main.
-      # They are collected and sent through a Pull Request.
+      # Changes are created locally only.
+      # They are sent through Pull Request.
       # ------------------------------------------------------------------------
 
       - name: Apply Ruff Fixes
         if: always()
         continue-on-error: true
         run: |
+
           ruff check . \
             --fix \
             --exclude venv \
             --exclude .venv \
             --exclude node_modules
+
 
           ruff format . \
             --exclude venv \
@@ -194,12 +139,24 @@ jobs:
 
 
       # ------------------------------------------------------------------------
-      # Check if Ruff changed anything
+      # Show Changes
+      # ------------------------------------------------------------------------
+
+      - name: Show Changes
+        if: always()
+        run: |
+          git status
+          git diff --stat
+
+
+
+      # ------------------------------------------------------------------------
+      # Detect Changes
       # ------------------------------------------------------------------------
 
       - name: Detect Changes
-        if: always()
         id: changes
+        if: always()
         run: |
 
           if git diff --quiet; then
@@ -213,13 +170,11 @@ jobs:
       # ------------------------------------------------------------------------
       # Create Pull Request
       #
-      # Creates a separate branch.
-      #
-      # main is NEVER modified directly.
+      # Never modifies main directly.
       # ------------------------------------------------------------------------
 
       - name: Create Pull Request
-        if: always() && steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
 
         with:
@@ -247,10 +202,10 @@ jobs:
 
             ## 🤖✨ Automated Ruff Cleanup
 
-            This Pull Request was generated automatically by GitHub Actions using Ruff. 🚀
+            This Pull Request was automatically generated by GitHub Actions using Ruff. 🚀
 
 
-            ### 🛠️ Changes included
+            ### 🛠️ Included changes
 
             - ✅ Ruff lint fixes
             - 🎨 Python formatting improvements
