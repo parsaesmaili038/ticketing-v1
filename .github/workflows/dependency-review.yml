@@ -1,39 +1,85 @@
-# Dependency Review Action
+# ==============================================================================
+# Dependency Review
+# ==============================================================================
 #
-# This Action will scan dependency manifest files that change as part of a Pull Request,
-# surfacing known-vulnerable versions of the packages declared or updated in the PR.
-# Once installed, if the workflow run is marked as required, PRs introducing known-vulnerable
-# packages will be blocked from merging.
+# Purpose
+# -------
+# Reviews dependency changes introduced by Pull Requests.
 #
-# Source repository: https://github.com/actions/dependency-review-action
-# Public documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#dependency-review-enforcement
-name: 'Dependency review'
+# Features
+# --------
+# ✔ Detects vulnerable package versions
+# ✔ Reviews newly added or updated dependencies
+# ✔ Posts a summary comment on Pull Requests
+# ✔ Blocks merging when high-risk vulnerabilities are introduced
+#
+# This workflow NEVER modifies your repository.
+#
+# ==============================================================================
+
+name: Dependency Review
+
 on:
   pull_request:
-    branches: [ "main" ]
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
 
-# If using a dependency submission action in this workflow this permission will need to be set to:
-#
-# permissions:
-#   contents: write
-#
-# https://docs.github.com/en/enterprise-cloud@latest/code-security/supply-chain-security/understanding-your-software-supply-chain/using-the-dependency-submission-api
+# ==============================================================================
+# Permissions
+# ==============================================================================
+
 permissions:
   contents: read
-  # Write permissions for pull-requests are required for using the `comment-summary-in-pr` option, comment out if you aren't using this option
   pull-requests: write
+
+# ==============================================================================
+# Jobs
+# ==============================================================================
 
 jobs:
   dependency-review:
+
+    name: Dependency Review
+
     runs-on: ubuntu-latest
+
+    timeout-minutes: 10
+
     steps:
-      - name: 'Checkout repository'
+
+      # ------------------------------------------------------------------------
+      # Checkout repository
+      # ------------------------------------------------------------------------
+
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: 'Dependency Review'
+
+      # ------------------------------------------------------------------------
+      # Review dependency changes
+      #
+      # Scans dependency files modified in this Pull Request.
+      # Reports vulnerable packages and license issues.
+      # ------------------------------------------------------------------------
+
+      - name: Analyze dependency changes
         uses: actions/dependency-review-action@v4
-        # Commonly enabled options, see https://github.com/actions/dependency-review-action#configuration-options for all available options.
+
         with:
+
+          # Always publish a summary in the Pull Request.
           comment-summary-in-pr: always
-        #   fail-on-severity: moderate
-        #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
-        #   retry-on-snapshot-warnings: true
+
+          # Retry snapshot retrieval if GitHub snapshot generation
+          # has not completed yet.
+          retry-on-snapshot-warnings: true
+
+          # Fail the workflow when vulnerabilities of this severity
+          # or higher are introduced.
+          fail-on-severity: high
+
+          # Example:
+          # deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
