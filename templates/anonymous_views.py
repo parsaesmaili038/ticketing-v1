@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
-from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
-import hashlib
 import uuid # اگر بخواهیم از UUID استفاده کنیم
 
 # --- شبیه‌سازی مدل (اگر نمی‌خواهید مدل اصلی را تغییر دهید) ---
