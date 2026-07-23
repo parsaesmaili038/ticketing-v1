@@ -1,10 +1,34 @@
-name: Bandit Security Scan
+# ==============================================================================
+# Bandit Security Scan
+# ==============================================================================
+#
+# Purpose
+# -------
+# Bandit is a Python security linter.
+#
+# This workflow:
+#
+# ✔ Scans Python code for common security problems
+# ✔ Detects insecure patterns
+# ✔ Generates a security report
+# ✔ Comments results on Pull Requests
+# ✔ Never modifies source code automatically
+#
+# IMPORTANT
+# ---------
+#
+# • This workflow is report-only.
+# • No automatic fixes are applied.
+# • Developers review findings manually.
+#
+# ==============================================================================
 
-# Security scan workflow
-# This workflow checks the whole project for Python security issues.
-# It only reports findings and never modifies code automatically.
+
+name: 🔐 Bandit Security Scan
+
 
 on:
+
   push:
     branches:
       - main
@@ -13,92 +37,197 @@ on:
     branches:
       - main
 
-  # Weekly full project security scan
-  # Runs every Sunday at 00:00 UTC
+  # Weekly security scan
   schedule:
     - cron: "0 0 * * 0"
 
+
 permissions:
+
   contents: read
   pull-requests: write
 
+
+
 jobs:
+
   bandit:
 
-    name: Run Bandit Security Scanner
+    name: 🔐 Run Bandit Security Scanner
 
     runs-on: ubuntu-latest
 
+
     steps:
 
-      # Download repository code
+
+      # ------------------------------------------------------------------------
+      # Checkout repository
+      # ------------------------------------------------------------------------
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Python 3.14 environment
-      - name: Set up Python 3.14
+
+
+      # ------------------------------------------------------------------------
+      # Setup Python
+      # ------------------------------------------------------------------------
+
+      - name: Setup Python 3.14
         uses: actions/setup-python@v5
+
         with:
           python-version: "3.14"
-          cache: "pip"
+          cache: pip
 
-      # Install Bandit security scanner
+
+
+      # ------------------------------------------------------------------------
+      # Install Bandit
+      # ------------------------------------------------------------------------
+
       - name: Install Bandit
         run: |
           python -m pip install --upgrade pip
           pip install bandit
 
-      # Scan entire project
-      # Excludes virtual environments and ignores password example warnings
+
+
+      # ------------------------------------------------------------------------
+      # Run Security Scan
+      # ------------------------------------------------------------------------
+
       - name: Run Bandit Security Scan
         id: bandit
         continue-on-error: true
+
         run: |
+
           bandit \
             -r . \
-            -x ./venv,./.venv,./env \
+            -x venv,.venv,env,node_modules \
             -s B105 \
             -f json \
             -o bandit-report.json
 
-      # Add report summary to GitHub Actions log
-      - name: Display Bandit Report
-        run: |
-          cat bandit-report.json || true
 
-      # Comment report on Pull Requests
-      - name: Comment Bandit Results on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+
+      # ------------------------------------------------------------------------
+      # Upload Report
+      # ------------------------------------------------------------------------
+
+      - name: Upload Bandit Report
+
+        uses: actions/upload-artifact@v4
+
         with:
+
+          name: bandit-security-report
+
+          path: bandit-report.json
+
+
+
+      # ------------------------------------------------------------------------
+      # Show Summary
+      # ------------------------------------------------------------------------
+
+      - name: Display Bandit Summary
+
+        run: |
+
+          echo "🔐 Bandit Security Scan Completed"
+
+          cat bandit-report.json || echo "No report generated"
+
+
+
+      # ------------------------------------------------------------------------
+      # Comment Results on Pull Request
+      # ------------------------------------------------------------------------
+
+      - name: Comment Bandit Results
+
+        if: github.event_name == 'pull_request'
+
+        uses: actions/github-script@v7
+
+        with:
+
           script: |
+
             const fs = require("fs");
 
-            let report = "No Bandit report found.";
+
+            let report = "No security issues found 🎉";
+
 
             if (fs.existsSync("bandit-report.json")) {
-              report = fs.readFileSync(
-                "bandit-report.json",
-                "utf8"
+
+              const data = JSON.parse(
+                fs.readFileSync(
+                  "bandit-report.json",
+                  "utf8"
+                )
               );
+
+
+              const issues = data.results || [];
+
+
+              if (issues.length > 0) {
+
+                report = issues
+                  .slice(0, 10)
+                  .map(
+                    issue =>
+                    `- ⚠️ ${issue.test_name}: ${issue.issue_text}`
+                  )
+                  .join("\n");
+
+              }
+
             }
 
+
             const body = `
-            ## 🔐 Bandit Security Scan Report
 
-            Bandit scanned the entire project.
+## 🔐 Bandit Security Scan
 
-            ⚠️ This workflow only reports issues.
-            It does **not** modify source code automatically.
 
-            \`\`\`json
-            ${report.slice(0, 6000)}
-            \`\`\`
-            `;
+Bandit analyzed the Python codebase.
+
+
+### Result
+
+${report}
+
+
+### Information
+
+- 🛡️ Security scan only
+- 🚫 No automatic code changes
+- 👀 Manual review required
+
+
+Generated by:
+
+- 🔐 Bandit
+- 🤖 GitHub Actions
+- 🐍 Python Security Analysis
+
+`;
+
 
             github.rest.issues.createComment({
+
               owner: context.repo.owner,
+
               repo: context.repo.repo,
+
               issue_number: context.issue.number,
+
               body
+
             });
