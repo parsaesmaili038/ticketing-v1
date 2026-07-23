@@ -88,7 +88,7 @@ libpcap==1.11.0b29
 matplotlib==3.11.0
 matplotlib-inline==0.2.2
 maxminddb==3.1.1
-mistune==3.3.2
+mistune==3.3.3
 mpmath==1.4.1
 multidict==6.7.1
 mypy_extensions==1.1.0
@@ -129,7 +129,7 @@ pysnmp==7.1.27
 pyTelegramBotAPI==4.34.0
 pytest==9.1.1
 python-dateutil==2.9.0.post0
-python-discovery==1.4.3
+python-discovery==1.4.4
 python-json-logger==4.1.0
 pytokens==0.4.1
 pywin32-ctypes==0.2.3
