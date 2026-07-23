@@ -1,52 +1,108 @@
-# GitHub CodeQL Security Analysis
-# Scans source code for security vulnerabilities.
-# Runs on every push, pull request, and every Sunday at midnight.
+# ==========================================================
+# GitHub CodeQL Security Scan
+#
+# This workflow performs static code analysis using GitHub's
+# CodeQL engine to detect:
+#
+# - Security vulnerabilities
+# - Common coding mistakes
+# - Code quality issues
+# - Potential unsafe programming patterns
+#
+# The scan runs automatically:
+#   • On every push to the main branch
+#   • On every Pull Request targeting main
+#   • Every Sunday at 00:00 UTC
+#
+# Results are uploaded to GitHub Code Scanning where they can
+# be reviewed directly from the Security tab and Pull Requests.
+# ==========================================================
 
-name: "CodeQL Security Scan"
+name: CodeQL Security Scan
 
 on:
+  # Run after every push to the main branch.
   push:
-    branches:
-      - main
+    branches: [main]
 
+  # Scan all Pull Requests before they are merged.
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
+  # Perform a scheduled full repository scan once every week.
   schedule:
-    # Every Sunday at 00:00 UTC
+    # Sunday 00:00 UTC
     - cron: "0 0 * * 0"
 
+# Required permissions for uploading CodeQL results.
 permissions:
+  # Read repository source code.
   contents: read
+
+  # Upload security findings to GitHub Code Scanning.
   security-events: write
+
+  # Read GitHub Actions metadata if needed.
+  actions: read
 
 jobs:
   analyze:
-    name: Analyze CodeQL
+    # Display the language currently being analyzed.
+    name: Analyze (${{ matrix.language }})
+
+    # Use GitHub-hosted Ubuntu runner.
     runs-on: ubuntu-latest
 
     strategy:
+      # Continue scanning remaining languages even if one fails.
       fail-fast: false
+
+      # Analyze each supported language separately.
       matrix:
         language:
+          # Python source code
           - python
+
+          # JavaScript and TypeScript
           - javascript-typescript
+
+          # GitHub Actions workflow files
           - actions
 
     steps:
-      # Checkout repository
+
+      # ------------------------------------------------------
+      # Download the repository so CodeQL can inspect it.
+      # ------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Initialize CodeQL
+      # ------------------------------------------------------
+      # Initialize the CodeQL database.
+      #
+      # "security-and-quality" enables:
+      #   - Security vulnerability detection
+      #   - Code quality analysis
+      #   - Additional recommended CodeQL queries
+      # ------------------------------------------------------
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+          queries: security-and-quality
 
-      # Run analysis
-      - name: Perform CodeQL Analysis
+      # ------------------------------------------------------
+      # Execute CodeQL analysis.
+      #
+      # Results are uploaded automatically to GitHub Security
+      # where alerts appear in:
+      #
+      #   Security → Code scanning
+      #
+      # Pull Requests will also display newly introduced issues.
+      # This workflow never modifies source code automatically.
+      # ------------------------------------------------------
+      - name: Analyze source code
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
