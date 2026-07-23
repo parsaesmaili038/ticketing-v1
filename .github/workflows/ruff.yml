@@ -178,7 +178,7 @@ jobs:
 
           signoff: false
 
-                   commit-message: |
+          commit-message: |
             🤖 style(ruff): automated code cleanup ✨
 
           title: |
