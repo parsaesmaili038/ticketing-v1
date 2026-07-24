@@ -157,6 +157,27 @@ The project development team (and the always-ready, cheerful AI assistant!)
 
 Last updated: 7 Khordad 1405 (28 May 2026)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+User Responsibilities
+
+By using, copying, modifying, distributing, deploying, or otherwise interacting with this project, you acknowledge that you have read, understood, and accepted all project documentation, including but not limited to:
+
+readme.txt
+license.txt
+security.txt
+contributing.txt
+code_of_conduct.txt
+privacy.txt
+and any other documentation included in this repository.
+
+You are solely responsible for installation, deployment, configuration, maintenance, security, backups, and operation of your own instance.
+
+To the maximum extent permitted by applicable law, the developers and maintainers of ticketing-v1 shall not be liable for any direct, indirect, incidental, consequential, special, or punitive damages arising from the use, misuse, modification, deployment, distribution, configuration, or inability to use this project.
+
+Failure to read the documentation does not transfer any responsibility to the developers.
+
+By using this project, you accept all risks associated with its use
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 To run a virtual server on your computer, you need to run these commands: First, activate the virtual machine (venv) with this command: 
 venv\Scripts\activate
 Then run the server with this command and enjoy: 
