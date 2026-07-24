@@ -1,141 +1,201 @@
-) فارسی
-ساخت یوزر جدید در Django با CMD
+فارسی
 
-برای ساخت یوزر جدید در پروژه Django، دو روش رایج وجود دارد:
-روش اول: ساخت ادمین
+ساخت کاربر جدید در Django با CMD
 
-اگر بخواهی یک کاربر مدیر بسازی، این دستور را در CMD یا ترمینال اجرا کن:
+برای ساخت یک کاربر جدید در پروژه Django، دو روش رایج وجود دارد.
 
-                                                                    bash
+روش اول: ساخت مدیر (Superuser)
+
+اگر می‌خواهی یک کاربر مدیر (Superuser) بسازی، این دستور را در CMD یا ترمینال اجرا کن:
+
+bash
+
 python manage.py createsuperuser
 
-بعد از اجرای دستور:
+پس از اجرای دستور، اطلاعات زیر از شما خواسته می‌شود:
 
-    نام کاربری را وارد کن
-    ایمیل را وارد کن
-    رمز عبور را وارد کن
-    دوباره رمز عبور را تأیید کن
+* نام کاربری (Username)
+* ایمیل (Email)
+* رمز عبور (Password)
+* تأیید دوباره رمز عبور
 
-این کاربر می‌تواند وارد پنل مدیریت Django شود.
----------------------------------------------------------------------------------------------------------------------------------------------------------
+پس از تکمیل مراحل، این کاربر می‌تواند وارد پنل مدیریت Django شود که معمولاً در آدرس زیر در دسترس است:
+
+http://localhost:<port>/admin
+
+---
+
 روش دوم: ساخت کاربر معمولی
 
-اگر بخواهی یک کاربر عادی بسازی، ابتدا وارد shell جنگو شو:
+اگر می‌خواهی یک کاربر معمولی ایجاد کنی، ابتدا وارد Django Shell شو:
 
-                                                                    bash
+bash
+
 python manage.py shell
 
-سپس این کدها را وارد کن:
+سپس کد زیر را اجرا کن:
 
-                                                                    python
+python
+
 from django.contrib.auth.models import User
 
 user = User.objects.create_user(
-    username='ali',
-    password='12345678',
-    email='ali@example.com'
+username="ali",
+password="12345678",
+email="[ali@example.com](mailto:ali@example.com)"
 )
 user.save()
 
-توضیح خط به خط
+توضیح خط‌به‌خط
 
-    from django.contrib.auth.models import Userمدل User را از جنگو وارد می‌کند.
-    create_user(...)یک کاربر جدید می‌سازد.
-    user.save()اطلاعات کاربر را در دیتابیس ذخیره می‌کند.
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-2) English
-Creating a new user in Django using CMD
+from django.contrib.auth.models import User
+مدل داخلی User را از Django وارد می‌کند.
 
-To create a new user in a Django project, there are two common ways:
-Method 1: Create a superuser
+create_user(...)
+یک حساب کاربری جدید ایجاد می‌کند.
 
-If you want to create an admin user, run this command in CMD or terminal:
+user.save()
+اطلاعات کاربر را در پایگاه داده ذخیره می‌کند.
 
-                                                                    bash
+نکات مهم
+
+* از یک رمز عبور قوی استفاده کنید.
+* اگر نام کاربری از قبل وجود داشته باشد، خطا دریافت خواهید کرد.
+* قبل از اجرای دستورات، مطمئن شوید داخل پوشه پروژه قرار دارید.
+* اگر پروژه از پایگاه داده استفاده می‌کند، ابتدا باید Migrationها را اجرا کرده باشید.
+
+====================================================================
+
+English
+
+Creating a New User in Django Using CMD
+
+There are two common ways to create a new user in a Django project.
+
+Method 1: Create a Superuser
+
+If you want to create an administrator (superuser), run the following command in CMD or your terminal:
+
+bash
+
 python manage.py createsuperuser
 
-After running it:
+After running the command, you will be prompted to enter:
 
-    enter the username
-    enter the email
-    enter the password
-    confirm the password again
+* Username
+* Email address
+* Password
+* Password confirmation
 
-This user can log into the Django admin panel. (in localhost is localhost:{port}/admin
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Method 2: Create a regular user
+Once completed, this user can log in to the Django Admin Panel, which is usually available at:
 
-If you want to create a normal user, first open the Django shell:
+http://localhost:<port>/admin
 
-                                                                    bash
+---
+
+Method 2: Create a Regular User
+
+If you want to create a regular user, first open the Django shell:
+
+bash
+
 python manage.py shell
 
-Then type:
+Then run the following code:
 
-                                                                    python
+python
+
 from django.contrib.auth.models import User
 
 user = User.objects.create_user(
-    username='ali',
-    password='12345678',
-    email='ali@example.com'
+username="ali",
+password="12345678",
+email="[ali@example.com](mailto:ali@example.com)"
 )
 user.save()
 
-Line-by-line explanation
+Line-by-line Explanation
 
-    from django.contrib.auth.models import UserImports Django’s built-in User model.
-    create_user(...)Creates a new user account.
-    user.save()Saves the user into the database.
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-) العربية
+from django.contrib.auth.models import User
+Imports Django's built-in User model.
+
+create_user(...)
+Creates a new user account.
+
+user.save()
+Saves the user to the database.
+
+Important Notes
+
+* Use a strong password.
+* If the username already exists, Django will return an error.
+* Make sure you are inside the project directory before running the commands.
+* If your project uses a database, ensure that all migrations have already been applied.
+
+====================================================================
+
+العربية
+
 إنشاء مستخدم جديد في Django باستخدام CMD
 
-لإنشاء مستخدم جديد في مشروع Django، توجد طريقتان شائعتان:
-الطريقة الأولى: إنشاء مستخدم مدير
+توجد طريقتان شائعتان لإنشاء مستخدم جديد في مشروع Django.
 
-إذا كنت تريد إنشاء مستخدم إداري، شغّل هذا الأمر في CMD أو الطرفية:
+الطريقة الأولى: إنشاء مستخدم مدير (Superuser)
 
-                                                                    bash
+إذا كنت تريد إنشاء مستخدم مدير، شغّل الأمر التالي في CMD أو الطرفية:
+
+bash
+
 python manage.py createsuperuser
 
-بعد تنفيذ الأمر:
+بعد تنفيذ الأمر، سيُطلب منك إدخال:
 
-    أدخل اسم المستخدم
-    أدخل البريد الإلكتروني
-    أدخل كلمة المرور
-    أكد كلمة المرور مرة أخرى
+* اسم المستخدم
+* البريد الإلكتروني
+* كلمة المرور
+* تأكيد كلمة المرور
 
-هذا المستخدم يمكنه الدخول إلى لوحة تحكم Django.
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+بعد الانتهاء، يمكن لهذا المستخدم تسجيل الدخول إلى لوحة تحكم Django، والتي تكون متاحة عادةً على العنوان التالي:
+
+http://localhost:<port>/admin
+
+---
+
 الطريقة الثانية: إنشاء مستخدم عادي
 
-إذا كنت تريد إنشاء مستخدم عادي، افتح أولاً shell الخاص بـ Django:
+إذا كنت تريد إنشاء مستخدم عادي، افتح أولاً Django Shell:
 
-                                                                    bash
+bash
+
 python manage.py shell
 
-ثم اكتب الكود التالي:
+ثم نفّذ الكود التالي:
 
-                                                                    python
+python
+
 from django.contrib.auth.models import User
 
 user = User.objects.create_user(
-    username='ali',
-    password='12345678',
-    email='ali@example.com'
+username="ali",
+password="12345678",
+email="[ali@example.com](mailto:ali@example.com)"
 )
 user.save()
 
-شرح السطور
+شرح الأسطر
 
-    from django.contrib.auth.models import Userيستورد نموذج المستخدم المدمج في Django.
-    create_user(...)ينشئ حساب مستخدم جديد.
-    user.save()يحفظ المستخدم في قاعدة البيانات.
+from django.contrib.auth.models import User
+يستورد نموذج User المدمج في Django.
+
+create_user(...)
+ينشئ حساب مستخدم جديد.
+
+user.save()
+يحفظ بيانات المستخدم في قاعدة البيانات.
 
 ملاحظات مهمة
 
-    من الأفضل استخدام كلمة مرور قوية.
-    إذا كان اسم المستخدم موجودًا مسبقًا، سيظهر خطأ.
-    تأكد أنك داخل مجلد المشروع قبل تنفيذ الأوامر.
-    إذا كان المشروع يستخدم قاعدة بيانات، فيجب أن تكون عمليات الترحيل قد نُفذت مسبقًا.
+* استخدم كلمة مرور قوية.
+* إذا كان اسم المستخدم موجودًا مسبقًا، فستظهر رسالة خطأ.
+* تأكد من أنك داخل مجلد المشروع قبل تنفيذ الأوامر.
+* إذا كان المشروع يستخدم قاعدة بيانات، فتأكد من تنفيذ جميع عمليات الترحيل (Migrations) مسبقًا.
