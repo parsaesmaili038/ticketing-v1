@@ -14,7 +14,6 @@
 # ✔ Uploads HTML coverage report
 # ✔ Fails when coverage is below threshold
 #
-# =============================================================================
 name: Django Coverage
 
 
