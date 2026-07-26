@@ -7,7 +7,7 @@
 # Runs Django tests and measures test coverage.
 #
 # Features
-# --------
+# -------
 # ✔ Runs Django test suite
 # ✔ Generates coverage reports
 # ✔ Comments coverage result on Pull Requests
