@@ -163,6 +163,30 @@ jobs:
       # ------------------------------------------------------------------------
       # Pull Request Comment
       # ------------------------------------------------------------------------
+      #
+      # 📝 Maintainer Note:
+      #
+      # A big thank you to the GitHub Community for helping me
+      # understand and fix the YAML indentation issue in this workflow.
+      #
+      # The original problem was caused by the JavaScript template literal
+      # inside github-script, which prevented GitHub Actions from parsing
+      # the workflow correctly.
+      #
+      # Thanks to the detailed explanation and guidance from the community,
+      # this workflow is now more reliable and easier to maintain.
+      #
+      # Special thanks to Resul Caliskan (@resul-ai)
+      # for investigating the issue, identifying the YAML parsing problem,
+      # and providing a clear explanation that helped resolve the workflow.
+      #
+      # 🔗 GitHub profile:
+      # https://github.com/resul-ai
+      #
+      # 🔗 Related discussion:
+      # https://github.com/orgs/community/discussions/203000
+      #
+      # ------------------------------------------------------------------------
 
       - name: Comment coverage result
 
@@ -173,63 +197,42 @@ jobs:
 
         with:
 
-          script: |
+ script: |
+  const coverage = Number("${{ steps.coverage.outputs.percentage }}");
+  const threshold = Number("${{ env.COVERAGE_THRESHOLD }}");
 
-            const coverage =
-            Number("${{ steps.coverage.outputs.percentage }}");
+  const status =
+    coverage >= threshold
+      ? "✅ Coverage is healthy"
+      : "⚠️ Coverage is below required level";
 
+  const body = [
+    "## 🧪 Django Coverage Report",
+    "",
+    "| Metric | Result |",
+    "|---|---|",
+    `| 🧪 Coverage | **${coverage}%** |`,
+    `| 🎯 Required | **${threshold}%** |`,
+    "| 🐍 Framework | Django |",
+    "| 🤖 Generated | GitHub Actions |",
+    "",
+    "### Status",
+    "",
+    status,
+    "",
+    "### 📄 Reports",
+    "",
+    "HTML coverage report is available in workflow artifacts.",
+    "",
+    "> Automated quality check by GitHub Actions 🚀"
+  ].join("\n");
 
-            const threshold =
-            Number("${{ env.COVERAGE_THRESHOLD }}");
-
-
-            const status =
-            coverage >= threshold
-            ? "✅ Coverage is healthy"
-            : "⚠️ Coverage is below required level";
-
-
-            const body = `
-
-## 🧪 Django Coverage Report
-
-
-| Metric | Result |
-|---|---|
-| 🧪 Coverage | **${coverage}%** |
-| 🎯 Required | **${threshold}%** |
-| 🐍 Framework | Django |
-| 🤖 Generated | GitHub Actions |
-
-
-### Status
-
-${status}
-
-
-### 📄 Reports
-
-HTML coverage report is available in workflow artifacts.
-
-
-> Automated quality check by GitHub Actions 🚀
-
-`;
-
-
-            github.rest.issues.createComment({
-
-              owner: context.repo.owner,
-
-              repo: context.repo.repo,
-
-              issue_number: context.issue.number,
-
-              body
-
-            });
-
-
+  await github.rest.issues.createComment({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    issue_number: context.issue.number,
+    body,
+  });
 
       # ------------------------------------------------------------------------
       # Upload Reports
