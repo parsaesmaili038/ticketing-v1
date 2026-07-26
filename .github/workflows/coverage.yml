@@ -19,7 +19,7 @@
 name: Django Coverage
 
 
-on:
+"on":
 
   push:
     branches:
