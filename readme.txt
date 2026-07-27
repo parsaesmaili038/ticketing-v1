@@ -1,8 +1,5 @@
 
-[![Django Coverage](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml/badge.svg)](https://github.com/parsaesmaili038/ticketing-v1/actions)
-[![CodeQL](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/codeql.yml/badge.svg)](https://github.com/parsaesmaili038/ticketing-v1/actions)
-[![Dependency Review](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/parsaesmaili038/ticketing-v1/actions)
-[![Ruff](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/ruff.yml/badge.svg)](https://github.com/parsaesmaili038/ticketing-v1/actions)
+[![Django Coverage](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml/badge.svg?branch=test-coverage)](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml)
 If you use the project, you have approved all the rules mentioned in the rules.txt file.
 Comprehensive Project Documentation: Ticket Management System (Extended Version)
 1) Introduction and Project Goal
