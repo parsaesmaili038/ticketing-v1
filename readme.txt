@@ -1,5 +1,5 @@
 
-[![Django Coverage](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml/badge.svg?branch=main)](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml)
+![Django Coverage](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml/badge.svg?branch=main)
 If you use the project, you have approved all the rules mentioned in the rules.txt file.
 Comprehensive Project Documentation: Ticket Management System (Extended Version)
 1) Introduction and Project Goal
