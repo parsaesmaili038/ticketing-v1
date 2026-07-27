@@ -1,8 +1,4 @@
-![Pull Requests](https://img.shields.io/github/issues-pr/parsaesmaili038/ticketing-v1) 
-![Django Coverage](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml/badge.svg)
-![CodeQL](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/codeql.yml/badge.svg)
-![Dependency Review](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/dependency-review.yml/badge.svg)
-![Ruff](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/ruff.yml/badge.svg)
+![Pull Requests](https://img.shields.io/github/issues-pr/parsaesmaili038/ticketing-v1)![Django Coverage](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/coverage.yml/badge.svg)![CodeQL](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/codeql.yml/badge.svg)![Dependency Review](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/dependency-review.yml/badge.svg)![Ruff](https://github.com/parsaesmaili038/ticketing-v1/actions/workflows/ruff.yml/badge.svg)
 If you use the project, you have approved all the rules mentioned in the rules.txt file.
 Comprehensive Project Documentation: Ticket Management System (Extended Version)
 1) Introduction and Project Goal
