@@ -195,42 +195,42 @@ jobs:
 
         with:
 
- script: |
-  const coverage = Number("${{ steps.coverage.outputs.percentage }}");
-  const threshold = Number("${{ env.COVERAGE_THRESHOLD }}");
-
-  const status =
-    coverage >= threshold
-      ? "✅ Coverage is healthy"
-      : "⚠️ Coverage is below required level";
-
-  const body = [
-    "## 🧪 Django Coverage Report",
-    "",
-    "| Metric | Result |",
-    "|---|---|",
-    `| 🧪 Coverage | **${coverage}%** |`,
-    `| 🎯 Required | **${threshold}%** |`,
-    "| 🐍 Framework | Django |",
-    "| 🤖 Generated | GitHub Actions |",
-    "",
-    "### Status",
-    "",
-    status,
-    "",
-    "### 📄 Reports",
-    "",
-    "HTML coverage report is available in workflow artifacts.",
-    "",
-    "> Automated quality check by GitHub Actions 🚀"
-  ].join("\n");
-
-  await github.rest.issues.createComment({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    issue_number: context.issue.number,
-    body,
-  });
+                 script: |
+                  const coverage = Number("${{ steps.coverage.outputs.percentage }}");
+                  const threshold = Number("${{ env.COVERAGE_THRESHOLD }}");
+                
+                  const status =
+                    coverage >= threshold
+                      ? "✅ Coverage is healthy"
+                      : "⚠️ Coverage is below required level";
+                
+                  const body = [
+                    "## 🧪 Django Coverage Report",
+                    "",
+                    "| Metric | Result |",
+                    "|---|---|",
+                    `| 🧪 Coverage | **${coverage}%** |`,
+                    `| 🎯 Required | **${threshold}%** |`,
+                    "| 🐍 Framework | Django |",
+                    "| 🤖 Generated | GitHub Actions |",
+                    "",
+                    "### Status",
+                    "",
+                    status,
+                    "",
+                    "### 📄 Reports",
+                    "",
+                    "HTML coverage report is available in workflow artifacts.",
+                    "",
+                    "> Automated quality check by GitHub Actions 🚀"
+                  ].join("\n");
+                
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.issue.number,
+                    body,
+                  });
 
       # ------------------------------------------------------------------------
       # Upload Reports
