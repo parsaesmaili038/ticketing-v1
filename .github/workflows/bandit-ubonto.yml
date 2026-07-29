@@ -244,13 +244,23 @@ jobs:
       # ✖ No source code changes
       #
       # ------------------------------------------------------------------------
+      - name: Prepare Bandit Report For Pull Request
+
+        if: steps.bandit.outputs.issues == 'true'
+
+        run: |
+
+          git add bandit-ubuntu-report.json
+
+          git commit -m "🤖🔐 security(bandit): add security report" || echo "No changes"
+
+
 
       - name: Create Pull Request with Report
 
         if: steps.bandit.outputs.issues == 'true'
 
         uses: peter-evans/create-pull-request@v7
-
 
         with:
 
@@ -325,372 +335,77 @@ jobs:
 
         with:
 
-          script: |
+            script: |
 
-            const fs = require("fs");
-
-
-            if (!fs.existsSync("bandit-ubuntu-report.json")) {
-
-              return;
-
-            }
+              const fs = require("fs");
 
 
-            const data = JSON.parse(
+              if (!fs.existsSync("bandit-ubuntu-report.json")) {
 
-              fs.readFileSync(
+                return;
 
-                "bandit-ubuntu-report.json",
-
-                "utf8"
-
-              )
-
-            );
+              }
 
 
-            const issues = data.results || [];
+              const data = JSON.parse(
 
+                fs.readFileSync(
 
-            const report = issues.length === 0
+                  "bandit-ubuntu-report.json",
 
-              ? "No security issues found 🎉"
-
-              : issues
-
-                .slice(0, 10)
-
-                .map(
-
-                  issue =>
-
-                  `- ⚠️ ${issue.test_name}: ${issue.issue_text}`
+                  "utf8"
 
                 )
 
-                .join("\n");
+              );
 
 
+              const issues = data.results || [];
 
-            github.rest.issues.createComment({
 
-              owner: context.repo.owner,
+              const report = issues.length === 0
 
-              repo: context.repo.repo,
+                ? "No security issues found 🎉"
 
-              issue_number: context.issue.number,
+                : issues
 
-              body:
+                  .slice(0, 10)
 
-`## 🔐 Bandit Security Scan (Ubuntu)
+                  .map(
 
+                    issue =>
 
-### Result
+                    `- ⚠️ ${issue.test_name}: ${issue.issue_text}`
 
+                  )
 
-${report}
+                  .join("\n");
 
 
-### Information
+              const body = [
+                "## 🔐 Bandit Security Scan (Ubuntu)",
+                "",
+                "### Result",
+                "",
+                report,
+                "",
+                "### Information",
+                "",
+                "- 🐧 Ubuntu GitHub Runner",
+                "- 🛡️ Security scan only",
+                "- 🚫 No automatic code changes",
+                "- 👀 Manual review required"
+              ].join("\n");
 
 
-- 🐧 Ubuntu GitHub Runner
+              github.rest.issues.createComment({
 
-- 🛡️ Security scan only
+                owner: context.repo.owner,
 
-- 🚫 No automatic code changes
+                repo: context.repo.repo,
 
-- 👀 Manual review required`
+                issue_number: context.issue.number,
 
-            });# ==============================================================================
-# Bandit Security Scan - Ubuntu
-# ==============================================================================
+                body: body
 
-name: 🔐 Bandit (Ubuntu)
-
-
-on:
-
-  push:
-    branches:
-      - main
-
-  pull_request:
-    branches:
-      - main
-
-  schedule:
-    - cron: "0 0 * * 0"
-
-
-
-permissions:
-
-  contents: write
-  pull-requests: write
-
-
-
-jobs:
-
-
-  bandit:
-
-    name: 🔐 Run Bandit Security Scanner (Ubuntu)
-
-    runs-on: ubuntu-latest
-
-
-
-    steps:
-
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-        with:
-          fetch-depth: 0
-
-
-
-      - name: Setup Python 3.14
-        uses: actions/setup-python@v5
-
-        with:
-          python-version: "3.14"
-          cache: pip
-
-
-
-      - name: Install Bandit
-        run: |
-
-          python -m pip install --upgrade pip
-
-          pip install bandit
-
-
-
-      - name: Run Bandit Security Scan
-
-        id: bandit
-
-        continue-on-error: true
-
-        run: |
-
-          bandit \
-            -r . \
-            -x venv,.venv,env,node_modules \
-            -s B105 \
-            -f json \
-            -o bandit-ubuntu-report.json
-
-
-
-          python <<'PY'
-
-          import json
-          import os
-
-
-          with open("bandit-ubuntu-report.json") as f:
-              data = json.load(f)
-
-
-          issues = len(data.get("results", []))
-
-
-          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-
-              if issues > 0:
-                  output.write("issues=true\n")
-              else:
-                  output.write("issues=false\n")
-
-
-          print(f"Bandit found {issues} issue(s)")
-
-          PY
-
-
-
-      - name: Upload Bandit Ubuntu Report
-
-        uses: actions/upload-artifact@v4
-
-        with:
-
-          name: bandit-ubuntu-security-report
-
-          path: bandit-ubuntu-report.json
-
-
-
-      - name: Display Bandit Summary
-
-        run: |
-
-          echo "🔐 Bandit Ubuntu Security Scan Completed"
-
-          cat bandit-ubuntu-report.json || echo "No report generated"
-
-
-
-      - name: Create Pull Request with Report
-
-        if: steps.bandit.outputs.issues == 'true'
-
-        uses: peter-evans/create-pull-request@v7
-
-
-        with:
-
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-
-          branch: automation/bandit/${{ github.run_id }}
-
-
-          base: main
-
-
-          delete-branch: true
-
-
-          draft: false
-
-
-          commit-message: |
-
-            🤖🔐 security(bandit): add security report
-
-
-          title: |
-
-            🤖🔐 Automated Bandit Security Report
-
-
-          body: |
-
-            ## 🔐 Automated Bandit Security Report
-
-
-            Bandit detected potential security issues.
-
-
-            This Pull Request contains:
-
-            - ✅ Security report only
-            - 🚫 No source code modifications
-            - 👀 Manual review required
-
-
-            Generated by:
-
-            - 🔐 Bandit
-            - 🤖 GitHub Actions
-            - 🐧 Ubuntu Runner
-
-
-          labels: |
-
-            automated
-
-            bandit
-
-            security
-
-            needs-review
-
-
-
-      - name: Comment Bandit Results
-
-        if: github.event_name == 'pull_request'
-
-        uses: actions/github-script@v7
-
-
-        with:
-
-          script: |
-
-            const fs = require("fs");
-
-
-            if (!fs.existsSync("bandit-ubuntu-report.json")) {
-
-              return;
-
-            }
-
-
-            const data = JSON.parse(
-
-              fs.readFileSync(
-
-                "bandit-ubuntu-report.json",
-
-                "utf8"
-
-              )
-
-            );
-
-
-            const issues = data.results || [];
-
-
-            const report = issues.length === 0
-
-              ? "No security issues found 🎉"
-
-              : issues
-
-                .slice(0, 10)
-
-                .map(
-
-                  issue =>
-
-                  `- ⚠️ ${issue.test_name}: ${issue.issue_text}`
-
-                )
-
-                .join("\n");
-
-
-
-            github.rest.issues.createComment({
-
-              owner: context.repo.owner,
-
-              repo: context.repo.repo,
-
-              issue_number: context.issue.number,
-
-              body:
-
-## 🔐 Bandit Security Scan (Ubuntu)
-
-
-### Result
-
-
-${report}
-
-
-### Information
-
-
-- 🐧 Ubuntu GitHub Runner
-
-- 🛡️ Security scan only
-
-- 🚫 No automatic code changes
-
-- 👀 Manual review required`
-
-            });
+              });
