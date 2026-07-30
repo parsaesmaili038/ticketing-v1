@@ -131,7 +131,7 @@ jobs:
 
         if: always()
 
-        shell: powershell
+        shell: pwsh
 
         run: |
 
@@ -161,7 +161,7 @@ jobs:
 
           ```
 
-          $(Get-Content django-check-report.txt)
+          $(Get-Content -Raw django-check-report.txt)
 
           ```
 
@@ -170,7 +170,7 @@ jobs:
 
           ```
 
-          $(Get-Content django-migration-report.txt)
+          $(Get-Content -Raw django-migration-report.txt)
 
           ```
 
@@ -179,12 +179,17 @@ jobs:
 
           ```
 
-          $(Get-Content django-test-report.txt)
-
+          $(Get-Content -Raw django-test-report.txt)
+          
           ```
 
-          "@ | Out-File django-windows-summary.md -Encoding utf8
+          "@ | Set-Content -LiteralPath django-windows-summary.md -Encoding utf8NoBOM
+           $summary = Get-Content -Raw -Encoding utf8 django-windows-summary.md
 
+            if (-not $summary.Contains("🪟🐍")) {
+                throw "Unicode verification failed before posting the PR comment."
+            }
+            
 
 
       # 📦 ذخیره Artifact
@@ -248,7 +253,7 @@ jobs:
 
               issue_number: context.issue.number,
 
-              body: summary.substring(0,5000)
+              body: Array.from(summary).slice(0, 5000).join("")
 
             });
 
