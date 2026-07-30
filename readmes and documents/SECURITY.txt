@@ -1,4 +1,4 @@
-## User Responsibility
+## User Responsibilityش
 
 By using, copying, modifying, distributing, deploying, or interacting with this project, you acknowledge that you have read, understood, and accepted all documentation provided with the project.
 
