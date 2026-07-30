@@ -75,7 +75,7 @@ jobs:
       # Download the repository so CodeQL can inspect it.
       # ------------------------------------------------------
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # ------------------------------------------------------
       # Initialize the CodeQL database.

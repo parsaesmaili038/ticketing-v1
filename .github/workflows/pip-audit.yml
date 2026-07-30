@@ -30,7 +30,7 @@ jobs:
     steps:
       # Checkout repository source code
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Install and configure Python 3.14 environment
       - name: Set up Python
