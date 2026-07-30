@@ -183,8 +183,7 @@ jobs:
 
           ```
 
-          "@ | Out-File django-windows-summary.md
-
+          "@ | Out-File django-windows-summary.md -Encoding utf8
 
 
 
