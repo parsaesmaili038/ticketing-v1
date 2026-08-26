@@ -2,7 +2,7 @@ name: Issue Warning - 15 Days
 
 on:
   schedule:
-    - cron: "17 0 * * *"
+    - cron: "30 0 * * *"
 
   workflow_dispatch:
 
@@ -48,10 +48,8 @@ jobs:
                   per_page: 100
                 });
 
-              const botLogin = "github-actions[bot]";
-
               const realComments = comments.filter(comment => {
-                return comment.user?.login !== botLogin;
+                return comment.user?.type !== "Bot";
               });
 
               let lastActivity;
